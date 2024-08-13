@@ -34,7 +34,7 @@ function writeErrorLog($errorMessage) {
 }
 
 /* Queries */
-function buildQuery($queryType, $input, $conditions) {
+function llmBuildQuery($queryType, $input, $conditions) {
     global $DB, $apiKey;
 
     // Translation
@@ -142,8 +142,8 @@ function buildQuery($queryType, $input, $conditions) {
 }
 
 /* Inputs */
-function inputTextAssess($question, $answer) {
-    if (!$result = buildQuery('assess', $question, $answer)) {
+function llmTextAssess($question, $answer) {
+    if (!$result = llmBuildQuery('assess', $question, $answer)) {
         return false;
     }
 
@@ -153,7 +153,7 @@ function inputTextAssess($question, $answer) {
 
     // Loop 3 times or until an answer is "Pass" or "Fail"
     while ($sendit == true && $retries < 3) {
-        if (!$result = buildQuery('assess', $question, $answer)) {
+        if (!$result = llmBuildQuery('assess', $question, $answer)) {
             return false;
         }
         $resultLowercase = strtolower($result);
@@ -179,15 +179,15 @@ function inputTextAssess($question, $answer) {
     }
 }
 
-function inputTextTranslate($text, $language) {
-    if (!$result = buildQuery('translate', $text, $language)) {
+function llmTextTranslate($text, $language) {
+    if (!$result = llmBuildQuery('translate', $text, $language)) {
         return false;
     }
     return $result;
 }
 
-function inputImageDescribe($image, $conditions) {
-    if (!$result = buildQuery('image', $image, $conditions)) {
+function llmImageDescribe($image, $conditions) {
+    if (!$result = llmBuildQuery('image', $image, $conditions)) {
         return false;
     }
     return $result;
