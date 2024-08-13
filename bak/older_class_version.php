@@ -177,7 +177,7 @@ function buildQuery($question, $answer) {
             $pass = strpos($response, "Pass");
             $fail = strpos($response, "Fail");
             if ($pass !== false) {
-                echo 'Pass!';
+                echo 'Pass';
                 $sendit = false;
             }
             else if ($fail !== false) {
