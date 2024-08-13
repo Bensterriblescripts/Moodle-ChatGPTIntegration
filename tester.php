@@ -12,7 +12,7 @@ if ($consoleEnabled) {
 
 /* Cases */
 function testAssess($assessQuestion, $assessAnswer) {
-    if (!$grade = llmTextTranslate($assessQuestion, $assessAnswer)) {
+    if (!$grade = llmTextAssess($assessQuestion, $assessAnswer)) {
         writeDebugLog("Testing || Assessing Failed.");
     }
     else {
@@ -28,7 +28,7 @@ function testTranslate($translateInput, $translateLanguage) {
     }
 }
 function testImage($imageURL, $imageQuestion) {
-    if (!$imageDescription = llmTextTranslate($imageURL, $imageQuestion)) {
+    if (!$imageDescription = llmImageDescribe($imageURL, $imageQuestion)) {
         writeDebugLog("Testing || Image Description Failed.");
     }
     else {
