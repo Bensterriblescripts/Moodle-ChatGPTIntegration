@@ -17,7 +17,7 @@ function writeDebugLog($errorMessage) {
             // Log uat folder
             // file_put_contents(datetime . " || " . $errorMessage);
         }
-        echo $errorMessage;
+        echo $errorMessage."\n\n";
     }
 }
 function writeErrorLog($errorMessage) {
@@ -59,7 +59,7 @@ function llmBuildQuery($queryType, $input, $conditions) {
 
     // Assess
     else if ($queryType == 'assess') {
-        $promptString = "Question:\n" . $conditions . "\nAnswer:\n" . $input;
+        $promptString = "Question: " . $conditions . "\nAnswer: " . $input;
         $prompt = array(
             "model" => "gpt-3.5-turbo",
             "messages" => array(
@@ -98,6 +98,10 @@ function llmBuildQuery($queryType, $input, $conditions) {
     else {
         return false;
     }
+
+    // Logging
+    writeDebugLog("System Guardrails || " . $prompt['messages'][0]['content']);
+    writeDebugLog("User Prompt || \n" . $prompt['messages'][1]['content']);
 
     // Send it
     $result = "";
@@ -143,9 +147,6 @@ function llmBuildQuery($queryType, $input, $conditions) {
 
 /* Inputs */
 function llmTextAssess($question, $answer) {
-    if (!$result = llmBuildQuery('assess', $question, $answer)) {
-        return false;
-    }
 
     $sendit = true;
     $retries = 0;
@@ -153,7 +154,7 @@ function llmTextAssess($question, $answer) {
 
     // Loop 3 times or until an answer is "Pass" or "Fail"
     while ($sendit == true && $retries < 3) {
-        if (!$result = llmBuildQuery('assess', $question, $answer)) {
+        if (!$result = llmBuildQuery('assess', $answer, $question)) {
             return false;
         }
         $resultLowercase = strtolower($result);

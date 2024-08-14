@@ -1,14 +1,6 @@
 <?php
 
 include_once 'libOpenAI.php';
-$consoleEnabled = false;
-
-/* In case we need to test both */
-if ($consoleEnabled) {
-    $consoleConfirm = readline('Input Type | h - hardcoded, c - console: ');
-    if ($consoleConfirm == "c") { $consoleTest = true; }
-    else if ($consoleConfirm == "h") { $consoleTest = false; }
-}
 
 /* Cases */
 function testAssess($assessQuestion, $assessAnswer) {
@@ -36,48 +28,23 @@ function testImage($imageURL, $imageQuestion) {
     }
 }
 
-/* Hard-Coded Tests */
-if (!$consoleTest) {
+// Testing Vars
+$assessQuestion = "What is the distance between the earth and the sun?";
+$assessAnswer = "151 million km";
+$assessTest = true;
 
-    // Testing Vars
-    $assessQuestion = "What is the distance between the earth and the sun?";
-    $assessAnswer = "151 million km";
-    $assessTest = true;
+$translateInput = "";
+$translateLanguage = "";
+$translateTest = false;
 
-    $translateInput = "";
-    $translateLanguage = "";
-    $translateTest = false;
+$imageURL = "";
+$imageQuestion = "";
+$imageTest = false;
 
-    $imageURL = "";
-    $imageQuestion = "";
-    $imageTest = false;
+// Run Tests
+if ($assessTest) { testAssess($assessQuestion, $assessAnswer); }
+if ($translateTest) { testTranslate($translateInput, $translateLanguage); }
+if ($imageTest) { testImage($imageURL, $imageQuestion); }
 
-    // Run Tests
-    if ($assessTest) { testAssess($assessQuestion, $assessAnswer); }
-    if ($assessTranslate) { testTranslate($translateInput, $translateLanguage); }
-    if ($imageTest) { testImage($imageURL, $imageQuestion); }
-
-}
-
-/* Console Input Tests */
-if ($consoleTest) {
-    $type = readline("Test Type || 0 - Assess, 1 - Translate, 2 - Image: ");
-
-    // Input/Prompt Types
-    if ($type == "0") { 
-        $question = readline("Question: ");
-        $answer = readline("Answer: ");
-    }
-    else if ($type == "1") {
-        $language = readline("Language: ");
-        $text = readline("Text: ");
-        testTranslate($text, $language);
-    }
-    else if ($type == "2") {
-        $url = readline("Image URL: ");
-        $question = readline("Question: ");
-        testImage($url, $question);
-    }
-}
 
 ?>
