@@ -18,7 +18,7 @@ class Prompt {
         if ($type == 0) {
             $tokens = str_word_count($answer) * 3;
             $this->prompt = array(
-                "model" => "gpt-3.5-turbo",
+                "model" => "gpt-4o-mini",
                 "messages" => array(
                     array(
                         "role" => "system", 
@@ -37,11 +37,11 @@ class Prompt {
         // Plagiarism
         else if ($type == 1) {
             $this->prompt = array(
-                "model" => "gpt-3.5-turbo",
+                "model" => "gpt-4o-mini",
                 "messages" => array(
                     array(
                         "role" => "system", 
-                        "content" => "Determine whether the user's Answer to the Question is similar to a chatgpt response. You can only answer with: 'Yes' or 'No'."
+                        "content" => "Determine whether the user's Answer to the Question has perfect grammar and spelling with a very long explanation. You can only answer with: 'Yes' or 'No'."
                     ),
                     array(
                         "role" => "assistant", 
@@ -61,7 +61,7 @@ class Prompt {
         else if ($type == 2) {
             $promptString = "Question:\n" . $conditions . "\nAnswer:\n" . $answer;
             $this->prompt = array(
-                "model" => "gpt-3.5-turbo",
+                "model" => "gpt-4o-mini",
                 "messages" => array(
                     array(
                         "role" => "system", 
@@ -85,8 +85,8 @@ class Prompt {
         $url = "https://api.openai.com/v1/chat/completions";
         $jsonData = json_encode($data);
         $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
-        curl_setopt($curl, CURLOPT_CAINFO, './cacert.pem');
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        // curl_setopt($curl, CURLOPT_CAINFO, './cacert.pem');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             "Content-Type: application/json",
@@ -123,7 +123,7 @@ class Prompt {
 }
 
 // Build the final query
-function buildQuery($question, $answer) {
+function queryOpenAI($question, $answer) {
 
     // Does this need to be translated
     $translation = false;
@@ -193,5 +193,5 @@ function buildQuery($question, $answer) {
 }
 
 // Run the request/s
-buildQuery($question, $answer);
+queryOpenAI($question, $answer);
 ?>
